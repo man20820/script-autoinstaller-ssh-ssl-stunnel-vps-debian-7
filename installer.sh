@@ -206,13 +206,31 @@ rm /root/webmin_1.670_all.deb
 service webmin restart
 service vnstat restart
 
-# downlaod script
-cd
-wget -O speedtest_cli.py "https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py"
-wget -O bench-network.sh "https://raw.githubusercontent.com/rizal180499/Auto-Installer-VPS/master/conf/bench-network.sh"
-wget "https://raw.githubusercontent.com/rizal180499/Auto-Installer-VPS/master/conf/monssh"
-wget "https://raw.githubusercontent.com/rizal180499/Auto-Installer-VPS/master/conf/user-list"
-wget "https://raw.githubusercontent.com/rizal180499/Auto-Installer-VPS/master/conf/menu"
+# download script
+cd /usr/bin
+wget -O menu "https://raw.githubusercontent.com/Zahyy20/SSH-OpenVPN/master/API/menu.sh"
+wget -O usernew "https://raw.githubusercontent.com/Zahyy20/SSH-OpenVPN/master/API/usernew.sh"
+wget -O trial "https://raw.githubusercontent.com/Zahyy20/SSH-OpenVPN/master/API/trial.sh"
+wget -O hapus "https://raw.githubusercontent.com/Zahyy20/SSH-OpenVPN/master/API/hapus.sh"
+wget -O cek "https://raw.githubusercontent.com/Zahyy20/SSH-OpenVPN/master/API/user-login.sh"
+wget -O member "https://raw.githubusercontent.com/Zahyy20/SSH-OpenVPN/master/API/user-list.sh"
+wget -O resvis "https://raw.githubusercontent.com/Zahyy20/SSH-OpenVPN/master/API/resvis.sh"
+wget -O speedtest "https://raw.githubusercontent.com/Zahyy20/SSH-OpenVPN/master/API/speedtest_cli.py"
+wget -O info "https://raw.githubusercontent.com/Zahyy20/SSH-OpenVPN/master/API/info.sh"
+wget -O about "https://raw.githubusercontent.com/Zahyy20/SSH-OpenVPN/master/API/about.sh"
+
+echo "0 0 * * * root /sbin/reboot" > /etc/cron.d/reboot
+
+chmod +x menu
+chmod +x usernew
+chmod +x trial
+chmod +x hapus
+chmod +x cek
+chmod +x member
+chmod +x resvis
+chmod +x speedtest
+chmod +x info
+chmod +x about
 
 #Blockir Torrent
 iptables -A OUTPUT -p tcp --dport 6881:6889 -j DROP
@@ -229,18 +247,24 @@ iptables -A FORWARD -m string --algo bm --string "torrent" -j DROP
 iptables -A FORWARD -m string --algo bm --string "announce" -j DROP
 iptables -A FORWARD -m string --algo bm --string "info_hash" -j DROP
 
-# finalisasi
+# finishing
+cd
 chown -R www-data:www-data /home/vps/public_html
 service nginx start
-service php-fpm start
-service vnstat restart
 service openvpn restart
-service snmpd restart
+service cron restart
 service ssh restart
 service dropbear restart
-service fail2ban restart
 service squid3 restart
 service webmin restart
+rm -rf ~/.bash_history && history -c
+echo "unset HISTFILE" >> /etc/profile
+
+# install myweb
+cd /home/vps/public_html/
+wget -O /home/vps/public_html/myweb.tar "https://raw.githubusercontent.com/Zahyy20/SSH-OpenVPN/master/API/myweb.tar"
+cd /home/vps/public_html/
+tar xf myweb.tar
 
 # info
 clear
